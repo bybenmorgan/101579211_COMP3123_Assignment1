@@ -2,20 +2,25 @@ require("dotenv").config();
 
 const app = require("./app");
 const connectDatabase = require("./config/database");
+const logger = require("./utils/logger");
 
 const PORT = Number(process.env.PORT || 8081);
 
 async function startServer() {
   try {
     await connectDatabase();
-    console.log("MongoDB connected");
+    logger.info("MongoDB connected");
 
     app.listen(PORT, () => {
-      console.log(`API running at http://localhost:${PORT}`);
+      logger.info(`API running at http://localhost:${PORT}`);
     });
   } catch (error) {
-    console.error("Server startup failed:", error.name);
-    process.exit(1);
+    logger.error("Server startup failed", {
+      errorType: error.name
+    });
+
+    process.exitCode = 1;
+    logger.end();
   }
 }
 
