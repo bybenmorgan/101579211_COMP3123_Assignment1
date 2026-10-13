@@ -19,10 +19,18 @@ function errorHandler(error, req, res, next) {
     method: req.method,
     path: req.path,
     status,
-    errorType: error.name
+    errorType: error.name,
+    reason: message
   });
 
-  res.status(status).json({ error: message });
+const response = { error: message };
+
+// Keep xtra details out of server error responses
+if (status < 500 && error.details) {
+  response.details = error.details;
+}
+
+res.status(status).json(response);
 }
 
 module.exports = errorHandler;
