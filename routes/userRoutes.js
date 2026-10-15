@@ -1,7 +1,10 @@
 const express = require("express");
 const authController = require("../controllers/authController");
 const authLimiter = require("../middleware/authLimiter");
-const { signupValidators } = require("../validators/userValidators");
+const {
+  signupValidators,
+  loginValidators,
+} = require("../validators/userValidators");
 const validateRequest = require("../middleware/validateRequest");
 
 const router = express.Router();
@@ -12,7 +15,15 @@ router.post(
   authLimiter,
   signupValidators,
   validateRequest,
-  authController.signup
+  authController.signup,
+);
+
+router.post(
+  "/login",
+  authLimiter,
+  loginValidators,
+  validateRequest,
+  authController.login,
 );
 
 module.exports = router;

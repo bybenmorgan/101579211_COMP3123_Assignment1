@@ -1,4 +1,4 @@
-const { body, checkExact } = require("express-validator");
+const { body, checkExact, oneOf } = require("express-validator");
 
 const signupValidators = [
   body("username")
@@ -38,4 +38,41 @@ const signupValidators = [
   checkExact()
 ];
 
-module.exports = { signupValidators };
+const loginValidators = [
+  // Login needs a user or email
+  oneOf(
+    [body("username").exists(), body("email").exists()],
+    { message: "Enter a username or email" }
+  ),
+
+  body("username")
+    .optional()
+    .isString().withMessage("Username must be text")
+    .bail()
+    .trim()
+    .isLength({ min: 3, max: 30 })
+    .withMessage("Username must be between 3 and 30 characters"),
+
+  body("email")
+    .optional()
+    .isString().withMessage("Email must be text")
+    .bail()
+    .trim()
+    .isEmail().withMessage("Enter a valid email address")
+    .bail()
+    .isLength({ max: 254 })
+    .withMessage("Email must not exceed 254 characters")
+    .toLowerCase(),
+
+  body("password")
+    .isString().withMessage("Password is needed and must be text")
+    .bail()
+    .notEmpty().withMessage("Enter your password")
+    .bail()
+    .custom(value => Buffer.byteLength(value, "utf8") <= 72)
+    .withMessage("Password must not exceed 72 bytes"),
+
+  checkExact()
+];
+
+module.exports = { signupValidators, loginValidators };
