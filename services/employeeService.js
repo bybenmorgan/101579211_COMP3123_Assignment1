@@ -5,4 +5,12 @@ async function getEmployees(userId) {
   return Employee.find({ user: userId });
 }
 
-module.exports = { getEmployees };
+async function createEmployee(data, userId) {
+  return Employee.create({
+    ...data,
+    // Set  owner using the authenticated user
+    user: userId,
+  });
+}
+
+module.exports = { getEmployees, createEmployee };
