@@ -3,6 +3,7 @@ const helmet = require("helmet");
 const requestLogger = require("./middleware/requestLogger");
 const errorHandler = require("./middleware/errorHandler");
 const userRoutes = require("./routes/userRoutes");
+const employeeRoutes = require("./routes/employeeRoutes");
 
 const app = express();
 
@@ -17,8 +18,9 @@ app.get("/health", (req, res) => {
   });
 });
 
-// user API path
+// user and employee API paths
 app.use("/api/v1/user", userRoutes);
+app.use("/api/v1/emp", employeeRoutes);
 
 app.use((req, res, next) => {
   const error = new Error("Route not found");
