@@ -55,4 +55,34 @@ async function getEmployeeById(req, res, next) {
   }
 }
 
-module.exports = { getEmployees, createEmployee, getEmployeeById };
+async function updateEmployee(req, res, next) {
+  try {
+    const { eid } = matchedData(req, { locations: ["params"] });
+    const data = matchedData(req, { locations: ["body"] });
+
+    const employee = await employeeService.updateEmployee(
+      eid,
+      data,
+      req.user._id
+    );
+
+    logger.info("Employee updated", {
+      employeeId: employee._id.toString(),
+      userId: req.user._id.toString()
+    });
+
+    res.status(200).json({
+      message: "Employee updated successfully",
+      employee
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+module.exports = {
+  getEmployees,
+  createEmployee,
+  getEmployeeById,
+  updateEmployee
+};

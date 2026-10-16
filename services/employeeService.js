@@ -33,4 +33,26 @@ async function getEmployeeById(employeeId, userId) {
   throw error;
 }
 
-module.exports = { getEmployees, createEmployee, getEmployeeById };
+async function updateEmployee(employeeId, data, userId) {
+  // check the ownership before changes
+  const employee = await getEmployeeById(employeeId, userId);
+
+  employee.set({
+    first_name: data.first_name,
+    last_name: data.last_name,
+    email: data.email,
+    position: data.position,
+    salary: data.salary,
+    date_of_joining: data.date_of_joining,
+    department: data.department,
+  });
+
+  return employee.save();
+}
+
+module.exports = {
+  getEmployees,
+  createEmployee,
+  getEmployeeById,
+  updateEmployee,
+};
