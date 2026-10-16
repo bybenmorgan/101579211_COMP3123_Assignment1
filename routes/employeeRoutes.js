@@ -3,8 +3,7 @@ const { checkExact } = require("express-validator");
 const authenticate = require("../middleware/authenticate");
 const validateRequest = require("../middleware/validateRequest");
 const employeeController = require("../controllers/employeeController");
-const { employeeValidators } = require("../validators/employeeValidators");
-
+const {employeeValidators, employeeIdValidator,} = require("../validators/employeeValidators");
 const router = express.Router();
 
 // Every employee route needs a verified user
@@ -22,6 +21,14 @@ router.post(
   employeeValidators,
   validateRequest,
   employeeController.createEmployee,
+);
+
+router.get(
+  "/employees/:eid",
+  employeeIdValidator,
+  checkExact(),
+  validateRequest,
+  employeeController.getEmployeeById
 );
 
 module.exports = router;

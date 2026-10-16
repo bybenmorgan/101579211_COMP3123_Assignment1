@@ -36,4 +36,23 @@ async function createEmployee(req, res, next) {
   }
 }
 
-module.exports = { getEmployees, createEmployee };
+async function getEmployeeById(req, res, next) {
+  try {
+    const { eid } = matchedData(req, { locations: ["params"] });
+    const employee = await employeeService.getEmployeeById(
+      eid,
+      req.user._id
+    );
+
+    logger.info("Employee retrieved", {
+      employeeId: employee._id.toString(),
+      userId: req.user._id.toString()
+    });
+
+    res.status(200).json({ employee });
+  } catch (error) {
+    next(error);
+  }
+}
+
+module.exports = { getEmployees, createEmployee, getEmployeeById };

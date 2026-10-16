@@ -1,4 +1,4 @@
-const { body, checkExact } = require("express-validator");
+const { body, param, checkExact } = require("express-validator");
 
 const employeeValidators = [
   body("first_name")
@@ -58,4 +58,8 @@ const employeeValidators = [
   checkExact()
 ];
 
-module.exports = { employeeValidators };
+const employeeIdValidator = param("eid")
+  .isMongoId()
+  .withMessage("Enter a valid employee ID");
+
+module.exports = { employeeValidators, employeeIdValidator };

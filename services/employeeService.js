@@ -13,4 +13,24 @@ async function createEmployee(data, userId) {
   });
 }
 
-module.exports = { getEmployees, createEmployee };
+async function getEmployeeById(employeeId, userId) {
+  const employee = await Employee.findOne({
+    _id: employeeId,
+    user: userId,
+  });
+
+  if (employee) {
+    return employee;
+  }
+
+  // distinguish a missing employee from one owned by someoe else
+  const exists = await Employee.exists({ _id: employeeId });
+
+  const error = new Error(
+    exists ? "Employee belongs to another user" : "Employee not found",
+  );
+  error.status = exists ? 403 : 404;
+  throw error;
+}
+
+module.exports = { getEmployees, createEmployee, getEmployeeById };
