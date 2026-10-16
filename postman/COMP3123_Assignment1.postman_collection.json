@@ -1,0 +1,1708 @@
+{
+  "info": {
+    "_postman_id": "6f39ed32-9c81-4037-88ac-d3b8b57d8c66",
+    "name": "COMP3123 Assignment 1 API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "58560842",
+    "description": "Manual test collection. Set base_url and fresh token_a/token_b values locally after login; shared token defaults are empty. The expired-token test requires an intentionally expired JWT signed by this API. Employee IDs refer to the documented test database. For repeat delete tests, create new temporary employees and replace the deleted IDs with the newly returned IDs. The controlled 500 request requires the separate local error-handler test server on port 8082; it is not a deployed API endpoint."
+  },
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/health",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "health"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Unknown Route",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/not-a-real-route",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "not-a-real-route"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Malformed JSON",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"test\": \"value\",\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/health",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "health"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Sign up - User A",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"user_a\",\n  \"email\": \"usera@example.com\",\n  \"password\": \"TestPass123!\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/v1/user/signup",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "user",
+            "signup"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Sign up - Duplicate Username",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"user_a\",\n  \"email\": \"another@example.com\",\n  \"password\": \"TestPass123!\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/v1/user/signup",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "user",
+            "signup"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Sign up - Duplicate Email",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"another_user\",\n  \"email\": \"usera@example.com\",\n  \"password\": \"TestPass123!\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/v1/user/signup",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "user",
+            "signup"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Sign up - Invalid email",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"validation_user\",\n  \"email\": \"not-an-email\",\n  \"password\": \"TestPass123!\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/v1/user/signup",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "user",
+            "signup"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Sign up - Bad Password",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"validation_user\",\n  \"email\": \"validation@example.com\",\n  \"password\": \"short\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/v1/user/signup",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "user",
+            "signup"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Sign up - Missing Fields",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/v1/user/signup",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "user",
+            "signup"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Sign up - Unexpected Field",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"validation_user\",\n  \"email\": \"validation@example.com\",\n  \"password\": \"TestPass123!\",\n  \"role\": \"admin\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/v1/user/signup",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "user",
+            "signup"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Sign up - rate Limit",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"user_a\",\n  \"email\": \"usera@example.com\",\n  \"password\": \"TestPass123!\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/v1/user/signup",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "user",
+            "signup"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Sign up - User B",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"user_b\",\n  \"email\": \"userb@example.com\",\n  \"password\": \"TestPass456!\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/v1/user/signup",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "user",
+            "signup"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Login - User A - Username",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"user_a\",\n  \"password\": \"TestPass123!\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/v1/user/login",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "user",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Login - User A - Email",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"usera@example.com\",\n  \"password\": \"TestPass123!\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/v1/user/login",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "user",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Login - Wrong Password",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"user_a\",\n  \"password\": \"WrongPass123!\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/v1/user/login",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "user",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Login - Missing Creds",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/v1/user/login",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "user",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Login - Rate Limit",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"user_a\",\n  \"password\": \"WrongPass123!\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/v1/user/login",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "user",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Employees - Missing Token",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/v1/emp/employees",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "emp",
+            "employees"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Employees - Invalid Token",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "not-a-valid-token",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/v1/emp/employees",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "emp",
+            "employees"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Employees - User A - List",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token_a}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/v1/emp/employees",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "emp",
+            "employees"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Employees - Expired Token",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{expired_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/v1/emp/employees",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "emp",
+            "employees"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Employees - User A - Create",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token_a}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"first_name\": \"Alex\",\n  \"last_name\": \"Taylor\",\n  \"email\": \"alex.taylor@example.com\",\n  \"position\": \"Software Developer\",\n  \"salary\": 65000,\n  \"date_of_joining\": \"2026-10-01\",\n  \"department\": \"IT\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/v1/emp/employees",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "emp",
+            "employees"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Employees - Missing Fields",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token_a}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/v1/emp/employees",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "emp",
+            "employees"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Employees - Invalid Email",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token_a}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"first_name\": \"Alex\",\n  \"last_name\": \"Taylor\",\n  \"email\": \"no-email\",\n  \"position\": \"Software Developer\",\n  \"salary\": 65000,\n  \"date_of_joining\": \"2026-10-01\",\n  \"department\": \"IT\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/v1/emp/employees",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "emp",
+            "employees"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Employees - Invalid Salary",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token_a}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"first_name\": \"Alex\",\n  \"last_name\": \"Taylor\",\n  \"email\": \"alex.taylor@example.com\",\n  \"position\": \"Software Developer\",\n  \"salary\": -100,\n  \"date_of_joining\": \"2026-10-01\",\n  \"department\": \"IT\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/v1/emp/employees",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "emp",
+            "employees"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Employees - Bad Date",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token_a}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"first_name\": \"Alex\",\n  \"last_name\": \"Taylor\",\n  \"email\": \"alex.taylor@example.com\",\n  \"position\": \"Software Developer\",\n  \"salary\": 65000,\n  \"date_of_joining\": \"2026-02-30\",\n  \"department\": \"IT\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/v1/emp/employees",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "emp",
+            "employees"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Employees - Create - Missing Token",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"first_name\": \"Alex\",\n  \"last_name\": \"Taylor\",\n  \"email\": \"alex.taylor@example.com\",\n  \"position\": \"Software Developer\",\n  \"salary\": 65000,\n  \"date_of_joining\": \"2026-10-01\",\n  \"department\": \"IT\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/v1/emp/employees",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "emp",
+            "employees"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Employees - Create - Supplied Owner",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token_a}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"first_name\": \"Alex\",\n  \"last_name\": \"Taylor\",\n  \"email\": \"alex.taylor@example.com\",\n  \"position\": \"Software Developer\",\n  \"salary\": 65000,\n  \"date_of_joining\": \"2026-10-01\",\n  \"department\": \"IT\",\n  \"user\": \"6acfdb6a639a616dde754d63\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/v1/emp/employees",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "emp",
+            "employees"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Login - User B - Username",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"user_b\",\n  \"password\": \"TestPass456!\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/v1/user/login",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "user",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Employees - User B - Create",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token_b}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"first_name\": \"Sam\",\n  \"last_name\": \"Lee\",\n  \"email\": \"sam.lee@example.com\",\n  \"position\": \"QA Analyst\",\n  \"salary\": 60000,\n  \"date_of_joining\": \"2026-10-05\",\n  \"department\": \"Quality Assurance\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/v1/emp/employees",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "emp",
+            "employees"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Employees - User B - List",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token_b}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/v1/emp/employees",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "emp",
+            "employees"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Employee - User A - Get Own",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token_a}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/v1/emp/employees/6ad13ed56b7cc0aa13374156",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "emp",
+            "employees",
+            "6ad13ed56b7cc0aa13374156"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Employee - User B - Get Own",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token_b}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/v1/emp/employees/6ad14c266b7cc0aa13374157",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "emp",
+            "employees",
+            "6ad14c266b7cc0aa13374157"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Employee - User A - Update Own",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token_a}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"first_name\": \"Alex\",\n  \"last_name\": \"Taylor\",\n  \"email\": \"alex.taylor@example.com\",\n  \"position\": \"Senior Software Developer\",\n  \"salary\": 70000,\n  \"date_of_joining\": \"2026-10-01\",\n  \"department\": \"IT\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/v1/emp/employees/6ad13ed56b7cc0aa13374156",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "emp",
+            "employees",
+            "6ad13ed56b7cc0aa13374156"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Employee - Update - Supplied Owner",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token_a}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"first_name\": \"Alex\",\n  \"last_name\": \"Taylor\",\n  \"email\": \"alex.taylor@example.com\",\n  \"position\": \"Senior Software Developer\",\n  \"salary\": 70000,\n  \"date_of_joining\": \"2026-10-01\",\n  \"department\": \"IT\",\n  \"user\": \"6acfdb6a639a616dde754d63\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/v1/emp/employees/6ad13ed56b7cc0aa13374156",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "emp",
+            "employees",
+            "6ad13ed56b7cc0aa13374156"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Employee - Update - Bad Salary",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token_a}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"first_name\": \"Alex\",\n  \"last_name\": \"Taylor\",\n  \"email\": \"alex.taylor@example.com\",\n  \"position\": \"Senior Software Developer\",\n  \"salary\": -100,\n  \"date_of_joining\": \"2026-10-01\",\n  \"department\": \"IT\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/v1/emp/employees/6ad13ed56b7cc0aa13374156",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "emp",
+            "employees",
+            "6ad13ed56b7cc0aa13374156"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Employee - User A - Update B Denied",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token_a}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"first_name\": \"Alex\",\n  \"last_name\": \"Taylor\",\n  \"email\": \"alex.taylor@example.com\",\n  \"position\": \"Senior Software Developer\",\n  \"salary\": 70000,\n  \"date_of_joining\": \"2026-10-01\",\n  \"department\": \"IT\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/v1/emp/employees/6ad14c266b7cc0aa13374157",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "emp",
+            "employees",
+            "6ad14c266b7cc0aa13374157"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Employee - User B - Update Own",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token_b}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"first_name\": \"Sam\",\n  \"last_name\": \"Lee\",\n  \"email\": \"sam.lee@example.com\",\n  \"position\": \"Senior QA Analyst\",\n  \"salary\": 65000,\n  \"date_of_joining\": \"2026-10-05\",\n  \"department\": \"Quality Assurance\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/v1/emp/employees/6ad14c266b7cc0aa13374157",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "emp",
+            "employees",
+            "6ad14c266b7cc0aa13374157"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Employee - User B - Update A Denied",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token_b}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"first_name\": \"Sam\",\n  \"last_name\": \"Lee\",\n  \"email\": \"sam.lee@example.com\",\n  \"position\": \"Senior QA Analyst\",\n  \"salary\": 65000,\n  \"date_of_joining\": \"2026-10-05\",\n  \"department\": \"Quality Assurance\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/v1/emp/employees/6ad13ed56b7cc0aa13374156",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "emp",
+            "employees",
+            "6ad13ed56b7cc0aa13374156"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Employee - User A - Get B Denied",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/v1/emp/employees/6ad14c266b7cc0aa13374157",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "emp",
+            "employees",
+            "6ad14c266b7cc0aa13374157"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token_a}}",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Employee - Invalid ID",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token_b}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/v1/emp/employees/not-an-id",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "emp",
+            "employees",
+            "not-an-id"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Employee - Not Found",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token_a}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/v1/emp/employees/000000000000000000000000",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "emp",
+            "employees",
+            "000000000000000000000000"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Employee - User B - Get A Denied",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/v1/emp/employees/6ad13ed56b7cc0aa13374156",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "emp",
+            "employees",
+            "6ad13ed56b7cc0aa13374156"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token_b}}",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "User A tries deleting User B’s employee",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token_a}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/v1/emp/employees?eid=6ad14c266b7cc0aa13374157",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "emp",
+            "employees"
+          ],
+          "query": [
+            {
+              "key": "eid",
+              "value": "6ad14c266b7cc0aa13374157"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "User B tries deleting User A’s employee",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token_b}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/v1/emp/employees?eid=6ad13ed56b7cc0aa13374156",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "emp",
+            "employees"
+          ],
+          "query": [
+            {
+              "key": "eid",
+              "value": "6ad13ed56b7cc0aa13374156"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Employee - Missing ID",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token_a}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/v1/emp/employees",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "emp",
+            "employees"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Employee - User A - Create Temporary",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token_a}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"first_name\": \"Temporary\",\n  \"last_name\": \"Employee A\",\n  \"email\": \"temporary.a@example.com\",\n  \"position\": \"Test Assistant\",\n  \"salary\": 40000,\n  \"date_of_joining\": \"2026-10-01\",\n  \"department\": \"Testing\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/v1/emp/employees",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "emp",
+            "employees"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Employee - User B - Create Temporary",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token_b}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"first_name\": \"Temporary\",\n  \"last_name\": \"Employee B\",\n  \"email\": \"temporaryb.a@example.com\",\n  \"position\": \"Test Assistant\",\n  \"salary\": 40000,\n  \"date_of_joining\": \"2026-10-01\",\n  \"department\": \"Testing\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/v1/emp/employees",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "emp",
+            "employees"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Employee - User A - Delete Own",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token_a}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/v1/emp/employees?eid=6ad26d21060d69f9ed35d13a",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "emp",
+            "employees"
+          ],
+          "query": [
+            {
+              "key": "eid",
+              "value": "6ad26d21060d69f9ed35d13a"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Employee - User B - Delete Own",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token_b}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/v1/emp/employees?eid=6ad26da7060d69f9ed35d13b",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "emp",
+            "employees"
+          ],
+          "query": [
+            {
+              "key": "eid",
+              "value": "6ad26da7060d69f9ed35d13b"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Employee - Deleted - Confirmed",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token_a}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/v1/emp/employees/6ad26d21060d69f9ed35d13a",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "emp",
+            "employees",
+            "6ad26d21060d69f9ed35d13a"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Error Handler - Controlled 500 Test",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:8082/test-error",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8082",
+          "path": [
+            "test-error"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8081",
+      "type": "string",
+      "description": "API base URL; change to the deployed URL when needed."
+    },
+    {
+      "key": "token_a",
+      "value": "",
+      "type": "string",
+      "description": "Paste a fresh User A login token locally before protected User A requests. Keep empty in shared exports."
+    },
+    {
+      "key": "token_b",
+      "value": "",
+      "type": "string",
+      "description": "Paste a fresh User B login token locally before protected User B requests. Keep empty in shared exports."
+    },
+    {
+      "key": "expired_token",
+      "value": "",
+      "type": "string",
+      "description": "Use an intentionally expired JWT signed by this API for the expired-token test. Keep empty in shared exports."
+    }
+  ]
+}
