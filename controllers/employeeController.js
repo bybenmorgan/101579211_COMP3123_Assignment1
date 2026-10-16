@@ -39,14 +39,11 @@ async function createEmployee(req, res, next) {
 async function getEmployeeById(req, res, next) {
   try {
     const { eid } = matchedData(req, { locations: ["params"] });
-    const employee = await employeeService.getEmployeeById(
-      eid,
-      req.user._id
-    );
+    const employee = await employeeService.getEmployeeById(eid, req.user._id);
 
     logger.info("Employee retrieved", {
       employeeId: employee._id.toString(),
-      userId: req.user._id.toString()
+      userId: req.user._id.toString(),
     });
 
     res.status(200).json({ employee });
@@ -63,18 +60,34 @@ async function updateEmployee(req, res, next) {
     const employee = await employeeService.updateEmployee(
       eid,
       data,
-      req.user._id
+      req.user._id,
     );
 
     logger.info("Employee updated", {
       employeeId: employee._id.toString(),
-      userId: req.user._id.toString()
+      userId: req.user._id.toString(),
     });
 
     res.status(200).json({
       message: "Employee updated successfully",
-      employee
+      employee,
     });
+  } catch (error) {
+    next(error);
+  }
+}
+
+async function deleteEmployee(req, res, next) {
+  try {
+    const { eid } = matchedData(req, { locations: ["query"] });
+    await employeeService.deleteEmployee(eid, req.user._id);
+
+    logger.info("Employee deleted", {
+      employeeId: eid,
+      userId: req.user._id.toString(),
+    });
+
+    res.status(204).end();
   } catch (error) {
     next(error);
   }
@@ -84,5 +97,6 @@ module.exports = {
   getEmployees,
   createEmployee,
   getEmployeeById,
-  updateEmployee
+  updateEmployee,
+  deleteEmployee,
 };

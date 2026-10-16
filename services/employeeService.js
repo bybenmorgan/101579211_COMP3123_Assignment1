@@ -50,9 +50,26 @@ async function updateEmployee(employeeId, data, userId) {
   return employee.save();
 }
 
+async function deleteEmployee(employeeId, userId) {
+  await getEmployeeById(employeeId, userId);
+
+  // Include owner the delete queries
+  const result = await Employee.deleteOne({
+    _id: employeeId,
+    user: userId,
+  });
+
+  if (result.deletedCount === 0) {
+    const error = new Error("Employee not found");
+    error.status = 404;
+    throw error;
+  }
+}
+
 module.exports = {
   getEmployees,
   createEmployee,
   getEmployeeById,
   updateEmployee,
+  deleteEmployee,
 };

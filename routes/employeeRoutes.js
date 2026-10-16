@@ -6,6 +6,7 @@ const employeeController = require("../controllers/employeeController");
 const {
   employeeValidators,
   employeeIdValidator,
+  deleteEmployeeIdValidator,
 } = require("../validators/employeeValidators");
 const router = express.Router();
 
@@ -40,6 +41,14 @@ router.put(
   employeeValidators,
   validateRequest,
   employeeController.updateEmployee,
+);
+
+router.delete(
+  "/employees",
+  deleteEmployeeIdValidator,
+  checkExact(),
+  validateRequest,
+  employeeController.deleteEmployee,
 );
 
 module.exports = router;
